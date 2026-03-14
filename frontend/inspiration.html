@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inspiración - MIM Living</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="index.html" class="logo">MIM LIVING</a>
+
+    <nav class="nav">
+      <a href="dashboard.html">Inicio</a>
+      <a href="project.html">Mis proyectos</a>
+      <a href="inspiration.html">Inspiración</a>
+      <a href="#" id="logoutBtn" class="btn-login">Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main class="inspiration-page">
+    <section class="projects-hero">
+      <p class="section-mini">INSPIRACIÓN</p>
+      <h1>Descubre ideas para tu hogar</h1>
+      <p class="projects-text">
+        Al entrar se muestran todas las imágenes. Usa los filtros para ver solo las que te interesan.
+      </p>
+    </section>
+
+    <section class="preferences-card">
+      <h2>Filtrar inspiración</h2>
+
+      <div class="tags">
+        <button class="tag-btn" data-tag="salon">Salón</button>
+        <button class="tag-btn" data-tag="cocina">Cocina</button>
+        <button class="tag-btn" data-tag="dormitorio">Dormitorio</button>
+        <button class="tag-btn" data-tag="aseo">Aseo</button>
+        <button class="tag-btn" data-tag="minimalista">Minimalista</button>
+        <button class="tag-btn" data-tag="nogal">Nogal</button>
+        <button class="tag-btn" data-tag="beige">Beige</button>
+        <button class="tag-btn" data-tag="japandi">Japandi</button>
+        <button class="tag-btn" data-tag="nordico">Nórdico</button>
+      </div>
+    </section>
+
+    <section>
+      <div id="inspirationGrid" class="cards-grid"></div>
+    </section>
+
+    <section class="more-ideas">
+      <a
+        id="btnPinterest"
+        class="btn btn-secondary"
+        href="https://es.pinterest.com/search/pins/?q=interiorismo%20minimalista%20beige"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Ver más inspiración en Pinterest
+      </a>
+    </section>
+  </main>
+
+  <div id="imageModal" class="image-modal">
+    <span id="closeModal" class="close-modal">&times;</span>
+    <img id="modalImage" class="modal-content" src="" alt="Imagen ampliada">
+  </div>
+
+  <script src="js/inspiration.js"></script>
+</body>
+</html>

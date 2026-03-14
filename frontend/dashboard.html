@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - MIM Living</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="index.html" class="logo">MIM LIVING</a>
+
+    <nav class="nav">
+      <a href="dashboard.html">Inicio</a>
+      <a href="project.html">Mis proyectos</a>
+      <a href="inspiration.html">Inspiración</a>
+      <a href="#" id="logoutBtn" class="btn-login">Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="projects-hero">
+      <p class="section-mini">PANEL DE USUARIO</p>
+      <h1>Bienvenida a MIM Living</h1>
+      <p id="welcomeText" class="projects-text">
+        Aquí podrás gestionar tus proyectos y diseñar las estancias de cada uno.
+      </p>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="dashboard-card">
+        <h2>Mis proyectos</h2>
+        <p>
+          Crea proyectos y organízalos antes de diseñar sus estancias.
+        </p>
+        <a href="project.html" class="btn btn-secondary">Ir a proyectos</a>
+      </article>
+
+      <article class="dashboard-card">
+        <h2>Estancias dentro del proyecto</h2>
+        <p>
+          Cada proyecto puede contener varias estancias como salón, cocina, dormitorio o aseo.
+        </p>
+        <a href="project.html" class="btn btn-secondary">Gestionar proyectos</a>
+      </article>
+
+      <article class="dashboard-card">
+        <h2>Inspiración</h2>
+        <p>
+          Descubre referencias visuales para definir el estilo de tus espacios.
+        </p>
+        <a href="inspiration.html" class="btn btn-secondary">Explorar</a>
+      </article>
+    </section>
+  </main>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
