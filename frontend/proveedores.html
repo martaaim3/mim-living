@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>MIM LIVING - Gestión de Estancia</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="index.html" class="logo"><img src="img/logo.png" alt="MIM LIVING"></a>
+    <nav class="nav">
+      <a href="project.html">Mis proyectos</a>
+      <a href="index.html#novedades">Inspiración</a>
+      <button id="logoutBtn" class="btn-logout">Cerrar sesión</button>
+    </nav>
+  </header>
+
+  <main class="projects-page">
+    <section class="projects-hero">
+      <h1>Gestión de Estancia</h1>
+      <p>Localiza mobiliario real y organiza tu presupuesto con enlaces directos.</p>
+    </section>
+
+    <section class="project-layout" style="display: flex; justify-content: center; padding: 20px;">
+      <div class="project-form-card" style="width: 100%; max-width: 850px;">
+        
+        <div class="tabs-container">
+          <div class="tabs-header">
+            <button class="tab-btn active" onclick="openTab(event, 'tab-productos')">🛍️ Productos</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-presupuesto')">💰 Presupuesto Detallado</button>
+          </div>
+
+          <div id="tab-productos" class="tab-content active">
+            <div class="compact-grid">
+              <div class="control-field">
+                <label>Marca / Tienda</label>
+                <input type="text" id="marcaProducto" class="modern-input" placeholder="Ej: Zara Home">
+              </div>
+              <div class="control-field">
+                <label>Mueble</label>
+                <input type="text" id="tipoArticulo" class="modern-input" placeholder="Ej: Mesa de centro">
+              </div>
+            </div>
+            <button id="btnBuscarSimilaresManual" class="btn btn-primary" style="width: 100%;">Buscar en Catálogos Reales</button>
+          </div>
+
+          <div id="tab-presupuesto" class="tab-content">
+            <div class="compact-grid">
+              <div class="control-field">
+                <label>Elemento</label>
+                <input type="text" id="nombreElemento" class="modern-input" placeholder="Ej: Espejo redondo">
+              </div>
+              <div class="control-field">
+                <label>Precio (€)</label>
+                <input type="number" id="precioElemento" class="modern-input" placeholder="Ej: 89">
+              </div>
+            </div>
+            
+            <div class="control-field" style="margin-top: 10px;">
+              <label>Enlace del Producto (URL)</label>
+              <input type="url" id="urlElemento" class="modern-input" placeholder="https://www.tienda.com/producto...">
+            </div>
+
+            <button id="btnAnadirPresupuesto" class="btn btn-secondary" style="width: 100%; margin: 20px 0;">+ Añadir al Presupuesto</button>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <h3>Resumen del Presupuesto</h3>
+              <button id="btnGenerarPDF" type="button" class="btn-pdf">Descargar PDF 📄</button>
+            </div>
+
+            <div id="contenedorExportar" style="background: white; padding: 25px; border-radius: 8px; border: 1px solid #eee;">
+              <table class="presupuesto-tabla" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                  <tr style="border-bottom: 2px solid #bc9667; color: #8d6e63;">
+                    <th style="text-align: left; padding: 10px;">Descripción del Elemento</th>
+                    <th style="text-align: right; padding: 10px;">Coste Estimado</th>
+                  </tr>
+                </thead>
+                <tbody id="cuerpoPresupuesto"></tbody>
+                <tfoot>
+                  <tr style="font-weight: bold; border-top: 2px solid #bc9667;">
+                    <td style="padding: 15px 10px;">TOTAL PROYECTO</td>
+                    <td id="totalPresupuesto" style="text-align: right; padding: 15px 10px;">0.00€</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+  <script>
+    function openTab(evt, tabName) {
+      const contents = document.getElementsByClassName("tab-content");
+      for (let content of contents) content.classList.remove("active");
+      const buttons = document.getElementsByClassName("tab-btn");
+      for (let btn of buttons) btn.classList.remove("active");
+      document.getElementById(tabName).classList.add("active");
+      evt.currentTarget.classList.add("active");
+    }
+  </script>
+  <script src="js/api.js"></script>
+  <script src="js/proveedores.js"></script>
+</body>
+</html>

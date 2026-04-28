@@ -27,14 +27,27 @@ if (loginForm) {
         return;
       }
 
-      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+      const usuario = data.usuario || data.user || data;
+
+      if (!usuario.id && usuario.id_usuario) {
+        usuario.id = usuario.id_usuario;
+      }
+
+      if (!usuario.id_usuario && usuario.id) {
+        usuario.id_usuario = usuario.id;
+      }
+
+      localStorage.setItem("usuario", JSON.stringify(usuario));
+
       mensaje.style.color = "#55735c";
       mensaje.textContent = "Inicio de sesión correcto";
 
       setTimeout(() => {
         window.location.href = "dashboard.html";
-      }, 900);
+      }, 800);
+
     } catch (error) {
+      console.error("Error iniciando sesión:", error);
       mensaje.textContent = "Error de conexión con el servidor";
     }
   });

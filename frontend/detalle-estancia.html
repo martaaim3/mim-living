@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle estancia - MIM Living</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="detalle-estancia-page">
+  <header class="topbar">
+    <a href="index.html" class="logo"><img src="img/logo.png" alt="MIM LIVING"></a>
+    <nav class="nav">
+      <a href="index.html">Inicio</a>
+      <a href="project.html">Mis proyectos</a>
+      <a href="presupuesto.html">Mis presupuestos</a>
+      <a href="index.html#novedades">Inspiración</a>
+      <a href="cuenta.html">Mi cuenta</a>
+      <a href="#" id="logoutBtn" class="btn-login">Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main class="dashboard-page">
+    <section class="dashboard-hero">
+      <div>
+        <h1 id="tituloEstancia">Detalle de estancia</h1>
+        <p>Configura tu espacio y genera propuestas de diseño con inteligencia artificial.</p>
+      </div>
+    </section>
+
+    <section class="dashboard-card ia-container-modern">
+      <div class="ia-header">
+        <h2>Diseñador Inteligente</h2>
+        <p>Sube tus fotos y deja que la IA transforme tu espacio.</p>
+      </div>
+
+      <div class="ia-grid-main">
+        <div class="ia-editor">
+          <div class="upload-group">
+            <div class="upload-item">
+              <span class="step-badge">1</span>
+              <label>Tu estancia actual</label>
+              <div class="upload-box-modern" onclick="document.getElementById('fotoEstanciaIa').click()">
+                <input type="file" id="fotoEstanciaIa" name="estancia" accept="image/*" style="display:none;">
+                <div class="upload-content" id="phEstancia">
+                  <span class="icon">📷</span>
+                  <span>Subir habitación</span>
+                </div>
+                <img src="" id="previsualEstancia" class="preview-img-modern" style="display:none;">
+              </div>
+            </div>
+
+            <div class="upload-item">
+              <span class="step-badge">2</span>
+              <label>Mueble a probar</label>
+              <div class="upload-box-modern" onclick="document.getElementById('fotoMuebleIa').click()">
+                <input type="file" id="fotoMuebleIa" name="mueble" accept="image/*" style="display:none;">
+                <div class="upload-content" id="phMueble">
+                  <span class="icon">🛋️</span>
+                  <span>Subir objeto</span>
+                </div>
+                <img src="" id="previsualMueble" class="preview-img-modern" style="display:none;">
+              </div>
+            </div>
+          </div>
+
+          <div class="ia-control-panel">
+            <div class="control-row">
+              <div class="control-field">
+                <label>Acción</label>
+                <select id="tipoAccionIa" class="modern-select">
+                  <option value="mueble">Integrar mueble</option>
+                  <option value="remodelar">Remodelar todo</option>
+                  <option value="estilo">Cambiar estilo</option>
+                </select>
+              </div>
+              <div class="control-field">
+                <label>Estilo</label>
+                <input type="text" id="estiloIa" class="modern-input" placeholder="Ej: Nórdico...">
+              </div>
+            </div>
+
+            <div class="control-field full">
+              <label>Instrucciones</label>
+              <textarea id="promptIa" class="modern-textarea" placeholder="Describe los cambios..."></textarea>
+            </div>
+
+            <button id="generarPropuestaBtn" class="btn-ia-modern">
+              <span id="btnTextIa">Generar Propuesta</span>
+              <div class="loader-ia" id="iaLoader" style="display:none;"></div>
+            </button>
+            <p id="mensajeIa" class="mensaje-ia"></p>
+          </div>
+        </div>
+
+        <div class="ia-display">
+          <div class="display-canvas" id="resultadoIa">
+            <div class="display-placeholder">
+              <div class="magic-icon">✨</div>
+              <p>El resultado aparecerá aquí</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="imageModal" class="image-modal">
+    <div class="image-modal-content">
+      <button id="closeImageModal" class="image-modal-close" type="button">×</button>
+      <img id="modalImage" class="image-modal-img" src="" alt="Imagen ampliada">
+      <div class="image-modal-actions">
+        <a id="downloadImageBtn" class="image-download-btn" href="#" download="propuesta-ia.jpg">Descargar imagen</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/detalle-estancia.js"></script>
+</body>
+</html>

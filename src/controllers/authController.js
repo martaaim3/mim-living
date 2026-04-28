@@ -92,3 +92,31 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+// --- NUEVA FUNCIÓN PARA ESTADÍSTICAS DE MI CUENTA ---
+exports.getUserStats = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Esta consulta cuenta proyectos del usuario y estancias asociadas a esos proyectos
+    const query = `
+      SELECT 
+        (SELECT COUNT(*) FROM proyecto WHERE id_usuario = $1) AS total_proyectos,
+        (SELECT COUNT(*) FROM estancia e 
+         JOIN proyecto p ON e.id_proyecto = p.id_proyecto 
+         WHERE p.id_usuario = $1) AS total_estancias
+    `;
+
+    const result = await pool.query(query, [id]);
+
+    return res.json({
+      total_proyectos: parseInt(result.rows[0].total_proyectos),
+      total_estancias: parseInt(result.rows[0].total_estancias)
+    });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Error al obtener estadísticas",
+      detalle: error.message
+    });
+  }
+};

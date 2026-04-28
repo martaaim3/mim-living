@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diseñador 3D - MIM Living</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --editor-bg: #f3eee8;
+      --editor-card: #ffffff;
+      --editor-border: #e4dbd1;
+      --editor-text: #2f2a26;
+      --editor-muted: #7c746d;
+      --editor-primary: #bc9667;
+      --editor-primary-dark: #a68357;
+      --editor-success: #55735c;
+      --editor-danger: #8a3d3d;
+      --editor-soft: #f8f5f1;
+      --editor-viewport: #d7cec5;
+      --editor-shadow: 0 18px 40px rgba(64, 47, 35, 0.08);
+      --sidebar-width-left: 320px;
+      --sidebar-width-right: 340px;
+    }
+
+    body {
+      background: var(--editor-bg);
+    }
+
+    .plano-3d-container {
+      display: grid;
+      grid-template-columns: var(--sidebar-width-left) 1fr var(--sidebar-width-right);
+      min-height: calc(100vh - 86px);
+      gap: 0;
+    }
+
+    .sidebar-left,
+    .sidebar-right {
+      background: var(--editor-card);
+      border-right: 1px solid var(--editor-border);
+      padding: 22px;
+      overflow-y: auto;
+    }
+
+    .sidebar-right {
+      border-right: none;
+      border-left: 1px solid var(--editor-border);
+    }
+
+    .viewport-3d {
+      position: relative;
+      background: radial-gradient(circle at top, #e4d7cd 0%, var(--editor-viewport) 100%);
+      overflow: hidden;
+      min-height: calc(100vh - 86px);
+    }
+
+    #canvas3d {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .panel-card {
+      background: var(--editor-card);
+      border: 1px solid var(--editor-border);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--editor-shadow);
+    }
+
+    .panel-card h3 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      color: var(--editor-text);
+    }
+
+    .panel-card p,
+    .panel-card label,
+    .panel-card small {
+      color: var(--editor-muted);
+      font-size: 13px;
+    }
+
+    .info-estancia {
+      display: grid;
+      gap: 6px;
+    }
+
+    .pill-indicator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #eef4ef;
+      color: var(--editor-success);
+      font-weight: 700;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .actions-grid,
+    .quick-actions-grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .quick-actions-grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .btn-editor,
+    .mueble-item,
+    .categoria-btn {
+      width: 100%;
+      border: 1px solid var(--editor-border);
+      background: #fff;
+      color: var(--editor-text);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .btn-editor:hover,
+    .mueble-item:hover,
+    .categoria-btn:hover {
+      border-color: var(--editor-primary);
+      transform: translateY(-1px);
+    }
+
+    .btn-editor.primary {
+      background: var(--editor-primary);
+      border-color: var(--editor-primary);
+      color: #fff;
+    }
+
+    .btn-editor.primary:hover {
+      background: var(--editor-primary-dark);
+      border-color: var(--editor-primary-dark);
+    }
+
+    .btn-editor.success {
+      background: var(--editor-success);
+      border-color: var(--editor-success);
+      color: #fff;
+    }
+
+    .btn-editor.danger {
+      background: var(--editor-danger);
+      border-color: var(--editor-danger);
+      color: #fff;
+    }
+
+    .btn-editor.soft {
+      background: var(--editor-soft);
+    }
+
+    .btn-editor.active,
+    .categoria-btn.active {
+      background: var(--editor-primary);
+      border-color: var(--editor-primary);
+      color: #fff;
+    }
+
+    .categoria-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .muebles-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .mueble-item {
+      display: grid;
+      gap: 4px;
+      background: #fbfaf8;
+    }
+
+    .mueble-item small {
+      color: var(--editor-muted);
+      font-weight: 500;
+    }
+
+    .viewport-overlay {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .overlay-card {
+      pointer-events: auto;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(228, 219, 209, 0.95);
+      border-radius: 16px;
+      padding: 14px 16px;
+      box-shadow: var(--editor-shadow);
+      max-width: 360px;
+      backdrop-filter: blur(10px);
+    }
+
+    .overlay-card h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: var(--editor-text);
+    }
+
+    .overlay-card p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--editor-muted);
+      line-height: 1.5;
+    }
+
+    .stats-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--editor-text);
+      border-bottom: 1px solid var(--editor-border);
+      padding-bottom: 10px;
+    }
+
+    .stat-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .plan-preview {
+      width: 100%;
+      min-height: 140px;
+      border-radius: 14px;
+      border: 1px dashed var(--editor-border);
+      background: #faf7f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: var(--editor-muted);
+    }
+
+    .plan-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #fff;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .field-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      height: 42px;
+      border: 1px solid var(--editor-border);
+      border-radius: 12px;
+      background: #fff;
+      padding: 4px;
+      cursor: pointer;
+    }
+
+    .color-swatches {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .swatch {
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+    }
+
+    .loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(30, 27, 24, 0.18);
+      color: #fff;
+      font-size: 18px;
+      z-index: 5;
+      backdrop-filter: blur(4px);
+    }
+
+    @media (max-width: 1300px) {
+      .plano-3d-container {
+        grid-template-columns: 290px 1fr 310px;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .plano-3d-container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar-left,
+      .sidebar-right {
+        border: none;
+        border-top: 1px solid var(--editor-border);
+      }
+
+      .viewport-3d {
+        min-height: 70vh;
+      }
+
+      .viewport-overlay {
+        flex-direction: column;
+      }
+
+      .overlay-card {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="dashboard.html" class="logo"><img src="img/logo.png" alt="MIM LIVING"></a>
+    <nav class="nav">
+      <a href="dashboard.html">Inicio</a>
+      <a href="project.html">Mis proyectos</a>
+      <a href="#" id="logoutBtn" class="btn-login">Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main class="plano-3d-container">
+    <aside class="sidebar-left">
+      <section class="panel-card info-estancia">
+        <h3>📐 Estancia</h3>
+        <p id="nombreEstancia">Cargando estancia...</p>
+        <p id="dimensionesEstancia">—</p>
+        <div class="quick-actions-grid">
+          <button id="btnProcesarPlano" type="button" class="btn-editor primary">🖼️ Subir plano (imagen o PDF)</button>
+          <button id="btnBorrarPlano" type="button" class="btn-editor soft">🧹 Quitar plano base</button>
+          <button id="btnAutoAmueblar" type="button" class="btn-editor soft">✨ Amueblar demo rápido</button>
+        </div>
+        <input type="file" id="uploadPlano" accept="image/*,.pdf" hidden>
+      </section>
+
+      <section class="panel-card">
+        <h3>🧭 Modo de vista</h3>
+        <div id="navModeIndicator" class="pill-indicator">🎮 Vista editor 3D</div>
+        <div class="quick-actions-grid three" style="margin-top: 12px;">
+          <button id="btnVistaPlano" type="button" class="btn-editor">Plano 2D</button>
+          <button id="btnVista3d" type="button" class="btn-editor active">Vista 3D</button>
+          <button id="btnVistaRecorrido" type="button" class="btn-editor">Recorrido</button>
+        </div>
+      </section>
+
+      <section class="panel-card">
+        <h3>🧱 Herramientas de paredes</h3>
+        <div class="actions-grid">
+          <button id="btnModoSeleccion" type="button" class="btn-editor active">Seleccionar</button>
+          <button id="btnModoPared" type="button" class="btn-editor">Dibujar pared</button>
+          <button id="btnModoEliminarPared" type="button" class="btn-editor">Eliminar pared</button>
+          <button id="btnModoPintarPared" type="button" class="btn-editor">Pintar pared</button>
+          <button id="btnModoMover" type="button" class="btn-editor">Mover muebles</button>
+          <button id="btnGenerarPerimetro" type="button" class="btn-editor soft">Generar perímetro base</button>
+          <button id="btnGenerarEstanciasDemo" type="button" class="btn-editor primary">Generar estancias demo</button>
+        </div>
+        <div class="field-group" style="margin-top: 14px;">
+          <label for="wallHeight">Altura de pared</label>
+          <div class="field-row">
+            <input type="range" id="wallHeight" min="2.2" max="4" step="0.05">
+            <span id="wallHeightValue"></span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="wallThickness">Grosor de pared</label>
+          <div class="field-row">
+            <input type="range" id="wallThickness" min="0.08" max="0.35" step="0.01">
+            <span id="wallThicknessValue"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel-card">
+        <h3>🛋️ Catálogo</h3>
+        <div class="categoria-grid" id="categoriasContainer">
+          <button class="categoria-btn active" data-categoria="sofas">Sofás</button>
+          <button class="categoria-btn" data-categoria="mesas">Mesas</button>
+          <button class="categoria-btn" data-categoria="sillas">Sillas</button>
+          <button class="categoria-btn" data-categoria="cocina">Cocina</button>
+          <button class="categoria-btn" data-categoria="bano">Baño</button>
+          <button class="categoria-btn" data-categoria="decoracion">Decoración</button>
+        </div>
+        <div id="mueblesList" class="muebles-list" style="margin-top: 14px;"></div>
+      </section>
+    </aside>
+
+    <section class="viewport-3d">
+      <canvas id="canvas3d"></canvas>
+
+      <div class="viewport-overlay">
+        <div class="overlay-card">
+          <h4>Controles</h4>
+          <p>
+            Ratón: orbitar / seleccionar · Rueda: zoom · TAB: alternar editor / recorrido ·
+            WASD: moverse en recorrido · Q / E: rotar mueble · SUPR: borrar selección
+          </p>
+        </div>
+
+        <div class="overlay-card">
+          <h4>Estado del editor</h4>
+          <p id="estadoEditor">Selecciona paredes o muebles</p>
+        </div>
+      </div>
+
+      <div id="loadingViewport" class="loading">⏳ Iniciando editor 3D...</div>
+    </section>
+
+    <aside class="sidebar-right">
+      <section class="panel-card">
+        <h3>🎨 Acabados</h3>
+        <div class="field-group">
+          <label for="wallColor">Color de pared</label>
+          <input type="color" id="wallColor" value="#e8ddd2">
+          <div class="color-swatches">
+            <button type="button" class="swatch" data-color-target="wall" data-color="#f5f1eb" style="background:#f5f1eb;"></button>
+            <button type="button" class="swatch" data-color-target="wall" data-color="#d6cec4" style="background:#d6cec4;"></button>
+            <button type="button" class="swatch" data-color-target="wall" data-color="#d9e5e2" style="background:#d9e5e2;"></button>
+            <button type="button" class="swatch" data-color-target="wall" data-color="#d5d9e8" style="background:#d5d9e8;"></button>
+          </div>
+          <button id="btnAplicarColorParedSeleccionada" type="button" class="btn-editor soft">Aplicar a pared seleccionada o a todas</button>
+        </div>
+
+        <div class="field-group">
+          <label for="floorColor">Color de suelo</label>
+          <input type="color" id="floorColor" value="#efe7de">
+          <div class="color-swatches">
+            <button type="button" class="swatch" data-color-target="floor" data-color="#efe7de" style="background:#efe7de;"></button>
+            <button type="button" class="swatch" data-color-target="floor" data-color="#c9b39a" style="background:#c9b39a;"></button>
+            <button type="button" class="swatch" data-color-target="floor" data-color="#a47f59" style="background:#a47f59;"></button>
+            <button type="button" class="swatch" data-color-target="floor" data-color="#717171" style="background:#717171;"></button>
+          </div>
+          <button id="btnAplicarColorSuelo" type="button" class="btn-editor soft">Aplicar color al suelo</button>
+        </div>
+      </section>
+
+      <section class="panel-card">
+        <h3>🧾 Plano base</h3>
+        <div id="planPreview" class="plan-preview">
+          <p>Sin plano cargado</p>
+        </div>
+        <p style="margin-top: 10px;">
+          En Plano 2D el plano base se ve nítido para calcar muros. Para la presentación puedes usar “Generar estancias demo” y mostrar las zonas interiores directamente en 3D.
+        </p>
+      </section>
+
+      <section class="panel-card">
+        <h3>🔎 Selección</h3>
+        <div id="seleccionInfo">
+          <p>No hay ningún elemento seleccionado.</p>
+        </div>
+        <div class="quick-actions-grid" style="margin-top: 12px;">
+          <button id="btnRotarIzquierda" type="button" class="btn-editor soft">↺ Rotar -15°</button>
+          <button id="btnRotarDerecha" type="button" class="btn-editor soft">↻ Rotar +15°</button>
+          <button id="btnDuplicarMueble" type="button" class="btn-editor soft">🧩 Duplicar mueble</button>
+          <button id="btnEliminarSeleccion" type="button" class="btn-editor danger">🗑️ Eliminar selección</button>
+        </div>
+      </section>
+
+      <section class="panel-card">
+        <h3>📊 Resumen</h3>
+        <div class="stats-list">
+          <div class="stat-row"><span>Muebles</span><strong id="totalMuebles">0</strong></div>
+          <div class="stat-row"><span>Paredes</span><strong id="totalParedes">0</strong></div>
+          <div class="stat-row"><span>Actualizado</span><strong id="ultimaActualizacion">-</strong></div>
+        </div>
+      </section>
+
+      <section class="panel-card">
+        <h3>💾 Acciones</h3>
+        <div class="actions-grid">
+          <button id="btnGuardarDiseno" type="button" class="btn-editor success">Guardar diseño</button>
+          <button id="btnLimpiarEscena" type="button" class="btn-editor soft">Limpiar muebles</button>
+          <button id="btnResetCamara" type="button" class="btn-editor soft">Resetear cámara</button>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
+  <script src="js/plano3d.js"></script>
+</body>
+</html>

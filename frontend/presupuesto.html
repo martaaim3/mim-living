@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presupuestos - MIM Living</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="dashboard.html" class="logo"><img src="img/logo.png" alt="MIM LIVING"></a>
+
+    <nav class="nav">
+      <a href="dashboard.html">Inicio</a>
+      <a href="project.html">Mis proyectos</a>
+      <a href="presupuesto.html" class="active">Mis presupuestos</a>
+      <a href="inspiration.html">Inspiración</a>
+      <a href="cuenta.html">Mi cuenta</a>
+      <a href="#" id="logoutBtn" class="btn-login">Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main class="presupuesto-page">
+    <!-- HEADER -->
+    <section class="presupuesto-header-section">
+      <div>
+        <p class="section-mini">GESTIÓN PRESUPUESTARIA</p>
+        <h1>Mis presupuestos</h1>
+        <p style="color: #7a726a; font-size: 15px; margin-top: 8px;">Gestiona los presupuestos de tus proyectos de forma detallada</p>
+      </div>
+    </section>
+
+    <!-- LISTADO DE PRESUPUESTOS -->
+    <section class="presupuesto-list-section">
+      <div class="presupuesto-list-container">
+        <div id="listaPresupuestos" class="presupuestos-grid">
+          <p class="empty-state" style="grid-column: 1/-1;">Cargando presupuestos...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL EDITOR DE PRESUPUESTO -->
+    <div id="modalEditorPresupuesto" class="modal-presupuesto-overlay">
+      <div class="modal-presupuesto-content">
+        <button id="btnCerrarModalPresupuesto" class="modal-presupuesto-close">✕</button>
+        
+        <div class="modal-presupuesto-header">
+          <h2 id="tituloPresupuestoModal">Presupuesto Proyecto</h2>
+        </div>
+
+        <!-- TABLA DE LÍNEAS -->
+        <div class="presupuesto-tabla-container">
+          <table class="presupuesto-tabla">
+            <thead>
+              <tr>
+                <th>Concepto</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th style="width: 60px;"></th>
+              </tr>
+            </thead>
+            <tbody id="tbodyLineasPresupuesto">
+              <tr><td colspan="5" style="text-align: center; padding: 20px; color: #7a726a;">Cargando líneas...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- NUEVA LÍNEA -->
+        <div class="presupuesto-form-nueva-linea">
+          <h3>Agregar línea</h3>
+          <form id="formNuevaLineaPresupuesto" class="form-nueva-linea">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Concepto</label>
+                <input type="text" id="conceptoPresupuesto" placeholder="Ej: Sofá" required>
+              </div>
+              <div class="form-group">
+                <label>Categoría</label>
+                <select id="categoriaPresupuesto" required>
+                  <option value="">Selecciona categoría</option>
+                  <option value="muebles">Muebles & Decoración</option>
+                  <option value="mano_obra">Mano de obra</option>
+                  <option value="materiales">Materiales</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Precio (€)</label>
+              <input type="number" step="0.01" id="precioPresupuesto" placeholder="0.00" required>
+            </div>
+            <button type="submit" class="btn btn-primary full">Agregar línea</button>
+          </form>
+        </div>
+
+        <!-- RESUMEN -->
+        <div class="presupuesto-resumen-modal">
+          <div class="resumen-linea">
+            <span>Total Muebles & Decoración:</span>
+            <strong id="totalMuebles">€0.00</strong>
+          </div>
+          <div class="resumen-linea">
+            <span>Total Mano de obra:</span>
+            <strong id="totalManoObra">€0.00</strong>
+          </div>
+          <div class="resumen-linea">
+            <span>Total Materiales:</span>
+            <strong id="totalMateriales">€0.00</strong>
+          </div>
+          <div class="resumen-total">
+            <span>PRESUPUESTO TOTAL</span>
+            <strong id="totalPresupuesto">€0.00</strong>
+          </div>
+          <button id="btnExportarPDF" class="btn btn-primary full">📥 Exportar PDF</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/presupuesto.js"></script>
+</body>
+</html>

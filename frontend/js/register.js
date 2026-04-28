@@ -28,13 +28,32 @@ if (registroForm) {
         return;
       }
 
+      const usuario = data.usuario || data.user || {
+        id: data.id || data.id_usuario,
+        id_usuario: data.id_usuario || data.id,
+        nombre,
+        email
+      };
+
+      if (!usuario.id && usuario.id_usuario) {
+        usuario.id = usuario.id_usuario;
+      }
+
+      if (!usuario.id_usuario && usuario.id) {
+        usuario.id_usuario = usuario.id;
+      }
+
+      localStorage.setItem("usuario", JSON.stringify(usuario));
+
       mensajeRegistro.style.color = "#55735c";
-      mensajeRegistro.textContent = "Usuario registrado correctamente";
+      mensajeRegistro.textContent = "Cuenta creada. Iniciando sesión...";
 
       setTimeout(() => {
-        window.location.href = "login.html";
-      }, 1000);
+        window.location.href = "dashboard.html";
+      }, 800);
+
     } catch (error) {
+      console.error("Error registrando usuario:", error);
       mensajeRegistro.textContent = "Error de conexión con el servidor";
     }
   });

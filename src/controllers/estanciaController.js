@@ -1,16 +1,27 @@
 const pool = require("../models/db");
 
-// Crear estancia
+// Crear estancia asociada a un proyecto específico
 exports.createEstancia = async (req, res) => {
   try {
     const { proyectoId } = req.params;
     const { nombre, ancho, largo, alto } = req.body;
 
+    if (!nombre) {
+      return res.status(400).json({
+        error: "El nombre de la estancia es obligatorio"
+      });
+    }
+
+    // Manejo de valores vacíos para que PostgreSQL los acepte como NULL
+    const anchoValue = ancho === "" || ancho === undefined ? null : ancho;
+    const largoValue = largo === "" || largo === undefined ? null : largo;
+    const altoValue = alto === "" || alto === undefined ? null : alto;
+
     const resultado = await pool.query(
       `INSERT INTO estancia (id_proyecto, nombre, ancho, largo, alto)
-       VALUES ($1,$2,$3,$4,$5)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
-      [proyectoId, nombre, ancho, largo, alto]
+      [proyectoId, nombre, anchoValue, largoValue, altoValue]
     );
 
     res.status(201).json({
@@ -26,7 +37,7 @@ exports.createEstancia = async (req, res) => {
   }
 };
 
-// Obtener estancias de un proyecto
+// Obtener todas las estancias de un proyecto
 exports.getEstancias = async (req, res) => {
   try {
     const { proyectoId } = req.params;
@@ -34,7 +45,7 @@ exports.getEstancias = async (req, res) => {
     const resultado = await pool.query(
       `SELECT * FROM estancia
        WHERE id_proyecto = $1
-       ORDER BY id`,
+       ORDER BY id_estancia ASC`,
       [proyectoId]
     );
 
@@ -48,19 +59,27 @@ exports.getEstancias = async (req, res) => {
   }
 };
 
-// Actualizar estancia
+// Actualizar datos de una estancia existente
 exports.updateEstancia = async (req, res) => {
   try {
     const { id } = req.params;
     const { nombre, ancho, largo, alto } = req.body;
 
+    const anchoValue = ancho === "" || ancho === undefined ? null : ancho;
+    const largoValue = largo === "" || largo === undefined ? null : largo;
+    const altoValue = alto === "" || alto === undefined ? null : alto;
+
     const resultado = await pool.query(
       `UPDATE estancia
-       SET nombre=$1, ancho=$2, largo=$3, alto=$4
-       WHERE id=$5
+       SET nombre = $1, ancho = $2, largo = $3, alto = $4
+       WHERE id_estancia = $5
        RETURNING *`,
-      [nombre, ancho, largo, alto, id]
+      [nombre, anchoValue, largoValue, altoValue, id]
     );
+
+    if (resultado.rows.length === 0) {
+      return res.status(404).json({ error: "Estancia no encontrada" });
+    }
 
     res.json({
       mensaje: "Estancia actualizada",
@@ -75,19 +94,21 @@ exports.updateEstancia = async (req, res) => {
   }
 };
 
-// Eliminar estancia
+// Eliminar una estancia
 exports.deleteEstancia = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await pool.query(
-      `DELETE FROM estancia WHERE id=$1`,
+    const resultado = await pool.query(
+      `DELETE FROM estancia WHERE id_estancia = $1 RETURNING *`,
       [id]
     );
 
-    res.json({
-      mensaje: "Estancia eliminada",
-    });
+    if (resultado.rows.length === 0) {
+      return res.status(404).json({ error: "Estancia no encontrada" });
+    }
+
+    res.json({ mensaje: "Estancia eliminada" });
 
   } catch (error) {
     res.status(500).json({

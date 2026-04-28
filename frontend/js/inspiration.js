@@ -9,6 +9,19 @@ const closeModal = document.getElementById("closeModal");
 
 let filtros = [];
 
+// Función para proteger la ruta
+function verificarSesion() {
+  const usuario = localStorage.getItem("usuario");
+
+  // Si no hay usuario y no estamos ya en el index, redirigir
+  if (!usuario && !window.location.pathname.includes("index.html")) {
+    window.location.href = "index.html";
+  }
+}
+
+// Ejecutar nada más cargar el script
+verificarSesion();
+
 const imagenes = [
   // SALÓN
   { titulo: "Salón 1", img: "img/salon.png", tags: ["salon", "minimalista", "beige", "nordico"] },

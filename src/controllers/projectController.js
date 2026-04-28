@@ -35,12 +35,18 @@ exports.createProject = async (req, res) => {
 // Obtener todos los proyectos
 exports.getProjects = async (req, res) => {
   try {
+    const { id_usuario } = req.query; 
+
+    if (!id_usuario) {
+      return res.status(400).json({ error: "Falta el ID de usuario" });
+    }
+
     const result = await pool.query(
-      "SELECT * FROM proyecto ORDER BY fecha_creacion DESC"
+      "SELECT * FROM proyecto WHERE id_usuario = $1 ORDER BY fecha_creacion DESC",
+      [id_usuario]
     );
 
     res.json(result.rows);
-
   } catch (error) {
     res.status(500).json({
       error: "Error al obtener los proyectos",

@@ -9,90 +9,72 @@
 <body>
 
   <header class="topbar">
-    <a href="index.html" class="logo">MIM LIVING</a>
+    <a href="dashboard.html" class="logo"><img src="img/logo.png" alt="MIM LIVING"></a>
 
     <nav class="nav">
       <a href="dashboard.html">Inicio</a>
       <a href="project.html">Mis proyectos</a>
+      <a href="presupuesto.html">Mis presupuestos</a>
       <a href="inspiration.html">Inspiración</a>
+      <a href="cuenta.html">Mi cuenta</a>
       <a href="#" id="logoutBtn" class="btn-login">Cerrar sesión</a>
     </nav>
   </header>
 
   <main class="projects-page">
-    <section class="projects-hero">
-      <div>
-        <p class="section-mini">GESTIÓN DE ESTANCIAS</p>
-        <h1 id="tituloProyecto">Estancias del proyecto</h1>
-        <p class="projects-text">
-          Añade y visualiza las estancias que pertenecen al proyecto seleccionado.
-        </p>
+    <!-- HEADER CON TÍTULO Y BOTÓN -->
+    <section class="estancias-header-section">
+      <div class="estancias-header-container">
+        <div>
+          <p class="section-mini">GESTIÓN DE ESTANCIAS</p>
+          <h1 id="tituloProyecto">Estancias del proyecto</h1>
+        </div>
+        <button id="btnNuevaEstancia" class="btn btn-primary">+ Nueva estancia</button>
       </div>
     </section>
 
-    <section class="project-layout">
-      <div class="project-form-card">
-        <h2>Crear estancia</h2>
+    <!-- GRID DE ESTANCIAS (3 COLUMNAS) -->
+    <section class="estancias-grid-section">
+      <div id="listaEstancias" class="estancias-grid-container">
+        <p class="empty-state">Todavía no hay estancias cargadas.</p>
+      </div>
+    </section>
+
+    <!-- MODAL CREAR ESTANCIA -->
+    <div id="modalNuevaEstancia" class="modal-estancia-overlay">
+      <div class="modal-estancia-content">
+        <button id="btnCerrarModalEstancia" class="modal-estancia-close">✕</button>
+        <h2 class="modal-estancia-title">Crear nueva estancia</h2>
 
         <form id="estanciaForm" class="form">
           <div class="form-group">
             <label for="nombreEstancia">Nombre de la estancia</label>
-            <input
-              type="text"
-              id="nombreEstancia"
-              placeholder="Ej. Salón"
-              required
-            >
+            <input type="text" id="nombreEstancia" placeholder="Ej. Salón" required>
           </div>
 
           <div class="form-group">
-            <label for="anchoEstancia">Ancho</label>
-            <input
-              type="number"
-              step="0.01"
-              id="anchoEstancia"
-              placeholder="Ej. 4.50"
-            >
+            <label for="anchoEstancia">Ancho (m)</label>
+            <input type="number" step="0.01" id="anchoEstancia" placeholder="Ej. 4.50">
           </div>
 
           <div class="form-group">
-            <label for="largoEstancia">Largo</label>
-            <input
-              type="number"
-              step="0.01"
-              id="largoEstancia"
-              placeholder="Ej. 5.20"
-            >
+            <label for="largoEstancia">Largo (m)</label>
+            <input type="number" step="0.01" id="largoEstancia" placeholder="Ej. 5.20">
           </div>
 
           <div class="form-group">
-            <label for="altoEstancia">Alto</label>
-            <input
-              type="number"
-              step="0.01"
-              id="altoEstancia"
-              placeholder="Ej. 2.60"
-            >
+            <label for="altoEstancia">Alto (m)</label>
+            <input type="number" step="0.01" id="altoEstancia" placeholder="Ej. 2.60">
           </div>
 
           <button type="submit" class="btn btn-primary full">Guardar estancia</button>
           <p id="mensajeEstancia" class="mensaje"></p>
         </form>
       </div>
-
-      <div class="project-list-card">
-        <div class="project-list-head">
-          <h2>Estancias creadas</h2>
-          <button id="recargarEstancias" class="btn btn-secondary">Actualizar</button>
-        </div>
-
-        <div id="listaEstancias" class="project-list">
-          <p class="empty-state">Todavía no hay estancias cargadas.</p>
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
 
+  <script src="js/api.js"></script>
   <script src="js/estancias.js"></script>
 </body>
 </html>

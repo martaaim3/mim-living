@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MIM Living</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <header class="topbar">
-    <a href="index.html" class="logo">MIM LIVING</a>
+    <a href="#" class="logo" id="logoLink"><img src="img/logo.png" alt="MIM LIVING"></a>
 
     <nav class="nav">
-      <a href="#inicio">Inicio</a>
+      <a href="dashboard.html">Inicio</a>
       <a href="#novedades">Novedades</a>
       <a href="#publicados">Proyectos publicados</a>
       <a href="login.html" class="btn-login">Iniciar sesión</a>
@@ -21,25 +23,27 @@
 
     <div class="search-box">
       <input type="text" placeholder="Buscar inspiración...">
-      <span>🔎</span>
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
     </div>
   </header>
 
   <main>
     <section class="hero" id="inicio">
       <div class="hero-text">
-        <span class="badge">INTERIORISMO DIGITAL</span>
+        <span class="badge">✨ INTERIORISMO DIGITAL</span>
 
-        <h1>Diseña tu espacio, imagina tu hogar</h1>
+        <h1>Diseña tu espacio con IA</h1>
 
         <p>
-          Una plataforma minimalista para crear proyectos, organizar estancias y
-          descubrir inspiración en tonos cálidos y elegantes.
+          Crea proyectos de interiorismo, visualiza cambios en tiempo real y descubre presupuestos inteligentes para cada estancia.
         </p>
 
         <div class="hero-actions">
-          <a href="login.html" class="btn btn-primary">Iniciar sesión</a>
-          <a href="register.html" class="btn btn-secondary">Crear cuenta</a>
+          <a href="register.html" class="btn btn-primary">Crear cuenta gratis →</a>
+          <a href="#novedades" class="btn btn-secondary">Ver ejemplos</a>
         </div>
       </div>
 
@@ -48,13 +52,59 @@
       </div>
     </section>
 
+    <!-- SECCIÓN: CÓMO FUNCIONA -->
+    <section class="how-it-works" id="como">
+      <div class="section-heading">
+        <p class="section-mini">PROCESO SIMPLE</p>
+        <h2>3 pasos para diseñar tu hogar</h2>
+        <p>Desde la idea hasta la realidad, seguidos en una plataforma intuitiva</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-icon">📐</div>
+          <h3>Crea un proyecto</h3>
+          <p>Define el nombre, presupuesto inicial y los espacios que quieres rediseñar</p>
+        </div>
+
+        <div class="step">
+          <div class="step-icon">🎨</div>
+          <h3>Diseña estancias</h3>
+          <p>Usa IA para propuestas visuales o diseña manualmente en 3D</p>
+        </div>
+
+        <div class="step">
+          <div class="step-icon">💰</div>
+          <h3>Gestiona presupuesto</h3>
+          <p>Visualiza costos por estancia y categoría, exporta presupuestos PDF</p>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <h3>2,500+</h3>
+          <p>Usuarios activos</p>
+        </div>
+        <div class="stat-item">
+          <h3>15,000+</h3>
+          <p>Estancias diseñadas</p>
+        </div>
+        <div class="stat-item">
+          <h3>4.8★</h3>
+          <p>Calificación promedio</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="novedades">
       <div class="section-heading">
-        <p class="section-mini">NOVEDADES</p>
-        <h2>Inspiración cálida y minimalista</h2>
+        <p class="section-mini">INSPIRACIÓN</p>
+        <h2>Proyectos destacados</h2>
         <p>
-          Descubre estilos, composiciones y referencias visuales para tus
-          proyectos de interiorismo.
+          Descubre estilos, composiciones y referencias visuales para tus proyectos de interiorismo.
         </p>
       </div>
 
@@ -88,20 +138,19 @@
     <section class="section" id="publicados">
       <div class="section-heading">
         <p class="section-mini">COMUNIDAD</p>
-        <h2>Proyectos publicados por otros usuarios</h2>
+        <h2>Proyectos públicos</h2>
         <p>
-          Explora ideas compartidas por la comunidad y encuentra inspiración
-          para tus propias estancias.
+          Explora ideas compartidas por la comunidad y encuentra inspiración para tus propias estancias.
         </p>
       </div>
 
-      <div class="published-list">
+      <div class="published-grid">
         <div class="published-item">
           <div>
             <h3>Casa Nórdica</h3>
             <p>Por Laura M. · 3 estancias · estilo natural</p>
           </div>
-          <button class="btn btn-secondary">Ver proyecto</button>
+          <a href="project-user.html" class="btn btn-secondary">Ver proyecto</a>
         </div>
 
         <div class="published-item">
@@ -109,7 +158,7 @@
             <h3>Apartamento Arena</h3>
             <p>Por Marta A. · 5 estancias · estilo minimal</p>
           </div>
-          <button class="btn btn-secondary">Ver proyecto</button>
+          <a href="project-user2.html" class="btn btn-secondary">Ver proyecto</a>
         </div>
 
         <div class="published-item">
@@ -117,11 +166,21 @@
             <h3>Refugio Beige</h3>
             <p>Por Carla P. · 4 estancias · estilo orgánico</p>
           </div>
-          <button class="btn btn-secondary">Ver proyecto</button>
+          <a href="project-user3.html" class="btn btn-secondary">Ver proyecto</a>
         </div>
       </div>
     </section>
   </main>
 
+
+  <div id="imageModal" class="image-modal">
+    <span class="close-modal">&times;</span>
+    <img class="image-modal-img" id="imgFull">
+  </div>
+
+  <script src="js/index.js"></script>
+
+
 </body>
+
 </html>

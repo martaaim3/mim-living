@@ -1,0 +1,96 @@
+<!-- FORMULARIO DE CONTACTO - Insertar en dashboard.html antes de </body> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario contacto - MIM LIVING</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="contact-modal" id="contactModal">
+  <div class="contact-modal-content">
+    <div class="contact-modal-header">
+      <h2 class="contact-modal-title">📞 Contáctanos</h2>
+      <button class="contact-modal-close" onclick="closeContactModal()">✕</button>
+    </div>
+
+    <div class="form-success" id="formSuccess">
+      ✅ Mensaje enviado correctamente. Te responderemos pronto.
+    </div>
+
+    <div class="loading-spinner" id="loadingSpinner">
+      <div class="spinner"></div>
+      <p style="margin-top: 12px; color: #666;">Enviando mensaje...</p>
+    </div>
+
+    <form id="contactForm" onsubmit="submitContactForm(event)" style="display: block;">
+      <div class="form-group">
+        <label for="contactName">Nombre Completo</label>
+        <input 
+          type="text" 
+          id="contactName" 
+          name="nombre" 
+          placeholder="Tu nombre"
+          required
+        >
+        <div class="form-error">Por favor ingresa tu nombre</div>
+      </div>
+
+      <div class="form-group">
+        <label for="contactEmail">Email</label>
+        <input 
+          type="email" 
+          id="contactEmail" 
+          name="email" 
+          placeholder="tu@email.com"
+          required
+        >
+        <div class="form-error">Por favor ingresa un email válido</div>
+      </div>
+
+      <div class="form-group">
+        <label for="contactPhone">Teléfono (opcional)</label>
+        <input 
+          type="tel" 
+          id="contactPhone" 
+          name="telefono" 
+          placeholder="+34 600 000 000"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="contactSubject">Asunto</label>
+        <input 
+          type="text" 
+          id="contactSubject" 
+          name="asunto" 
+          placeholder="¿En qué podemos ayudarte?"
+          required
+        >
+        <div class="form-error">Por favor ingresa un asunto</div>
+      </div>
+
+      <div class="form-group">
+        <label for="contactMessage">Mensaje</label>
+        <textarea 
+          id="contactMessage" 
+          name="mensaje" 
+          placeholder="Cuéntanos más detalles sobre tu consulta..."
+          required
+        ></textarea>
+        <div class="form-error">Por favor ingresa un mensaje</div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Enviar Mensaje</button>
+        <button type="button" class="btn-cancel" onclick="closeContactModal()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/contacto.js"></script>
+
+</body>
+</html>

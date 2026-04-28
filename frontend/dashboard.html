@@ -8,53 +8,143 @@
 </head>
 <body>
 
+  <!-- TOPBAR -->
   <header class="topbar">
-    <a href="index.html" class="logo">MIM LIVING</a>
-
+    <a href="dashboard.html" class="logo"><img src="img/logo.png" alt="MIM LIVING"></a>
     <nav class="nav">
-      <a href="dashboard.html">Inicio</a>
+      <a href="dashboard.html" class="active">Inicio</a>
       <a href="project.html">Mis proyectos</a>
+      <a href="presupuesto.html">Mis presupuestos</a>
       <a href="inspiration.html">Inspiración</a>
-      <a href="#" id="logoutBtn" class="btn-login">Cerrar sesión</a>
+      <a href="cuenta.html">Mi cuenta</a>
+      <button id="logoutBtn" class="btn-login">Cerrar sesión</button>
     </nav>
   </header>
 
-  <main>
-    <section class="projects-hero">
-      <p class="section-mini">PANEL DE USUARIO</p>
-      <h1>Bienvenida a MIM Living</h1>
-      <p id="welcomeText" class="projects-text">
-        Aquí podrás gestionar tus proyectos y diseñar las estancias de cada uno.
-      </p>
+  <!-- HERO / BIENVENIDA -->
+  <section class="dashboard-hero-section">
+    <div class="dashboard-hero-wrapper">
+      <h1 id="welcomeText">Bienvenida a tu espacio de diseño</h1>
+      <p>Crea proyectos, diseña estancias y transforma tus espacios</p>
+      
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-number" id="totalProyectos">-</div>
+          <div class="stat-label">Proyectos activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="totalEstancias">-</div>
+          <div class="stat-label">Estancias diseñadas</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="totalDiseños">-</div>
+          <div class="stat-label">Diseños 3D creados</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-main">
+
+    <!-- TARJETAS DE ACCIÓN -->
+    <section class="dashboard-section">
+      <div class="dashboard-action-grid">
+        <div class="dashboard-action-card">
+          <h3>📁 Crear Proyecto</h3>
+          <p>Organiza tus espacios en proyectos. Cada proyecto puede contener múltiples estancias.</p>
+          <a href="project.html" class="btn btn-primary btn-small" style="margin-top: 15px;">Ir a mis proyectos</a>
+        </div>
+
+        <div class="dashboard-action-card">
+          <h3>🎨 Diseño 3D</h3>
+          <p>Visualiza tus espacios en 3D, coloca muebles y experimenta con diferentes configuraciones.</p>
+          <a href="plano3d.html" class="btn btn-primary btn-small" style="margin-top: 15px;">Acceder a diseño 3D</a>
+        </div>
+
+        <div class="dashboard-action-card">
+          <h3>💡 Inspiración</h3>
+          <p>Descubre referencias visuales, estilos y combinaciones para definir el tono de tus espacios.</p>
+          <a href="inspiration.html" class="btn btn-primary btn-small" style="margin-top: 15px;">Explorar ideas</a>
+        </div>
+      </div>
     </section>
 
-    <section class="dashboard-grid">
-      <article class="dashboard-card">
-        <h2>Mis proyectos</h2>
-        <p>
-          Crea proyectos y organízalos antes de diseñar sus estancias.
-        </p>
-        <a href="project.html" class="btn btn-secondary">Ir a proyectos</a>
-      </article>
-
-      <article class="dashboard-card">
-        <h2>Estancias dentro del proyecto</h2>
-        <p>
-          Cada proyecto puede contener varias estancias como salón, cocina, dormitorio o aseo.
-        </p>
-        <a href="project.html" class="btn btn-secondary">Gestionar proyectos</a>
-      </article>
-
-      <article class="dashboard-card">
-        <h2>Inspiración</h2>
-        <p>
-          Descubre referencias visuales para definir el estilo de tus espacios.
-        </p>
-        <a href="inspiration.html" class="btn btn-secondary">Explorar</a>
-      </article>
+    <!-- PROYECTOS RECIENTES -->
+    <section class="dashboard-section">
+      <h2 class="section-title">Tus proyectos recientes</h2>
+      <div id="projectsContainer" class="dashboard-projects-grid">
+        <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; background: var(--card); border-radius: 18px; border: 2px dashed var(--border);">
+          <div style="font-size: 3em; margin-bottom: 15px;">📦</div>
+          <p style="color: var(--muted); margin-bottom: 20px; font-size: 1.1em;">No tienes proyectos creados aún</p>
+          <a href="project.html" class="btn btn-primary">Crear tu primer proyecto</a>
+        </div>
+      </div>
     </section>
+
+    <!-- AYUDA -->
+    <section class="dashboard-section">
+      <div class="help-box">
+        <h3>¿Necesitas ayuda?</h3>
+        <p>Consulta nuestra documentación o contáctanos para obtener soporte personalizado</p>
+        <button onclick="openContactModal()" class="btn btn-primary">📞 ¿Necesitas ayuda?</button>
+      </div>
+    </section>
+
   </main>
 
+  <!-- MODAL CONTACTO -->
+  <div class="contact-modal" id="contactModal">
+    <div class="contact-modal-content">
+      <div class="contact-modal-header">
+        <h2>📞 Contáctanos</h2>
+        <button class="contact-modal-close" onclick="closeContactModal()">✕</button>
+      </div>
+
+      <div class="form-success" id="formSuccess">
+        ✅ Mensaje enviado correctamente. Te responderemos pronto.
+      </div>
+
+      <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p style="margin-top: 12px; color: var(--muted);">Enviando mensaje...</p>
+      </div>
+
+      <form id="contactForm" onsubmit="submitContactForm(event)">
+        <div class="form-group">
+          <label for="contactName">Nombre Completo</label>
+          <input type="text" id="contactName" name="nombre" placeholder="Tu nombre" required>
+        </div>
+
+        <div class="form-group">
+          <label for="contactEmail">Email</label>
+          <input type="email" id="contactEmail" name="email" placeholder="tu@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="contactPhone">Teléfono (opcional)</label>
+          <input type="tel" id="contactPhone" name="telefono" placeholder="+34 600 000 000">
+        </div>
+
+        <div class="form-group">
+          <label for="contactSubject">Asunto</label>
+          <input type="text" id="contactSubject" name="asunto" placeholder="¿En qué podemos ayudarte?" required>
+        </div>
+
+        <div class="form-group">
+          <label for="contactMessage">Mensaje</label>
+          <textarea id="contactMessage" name="mensaje" placeholder="Cuéntanos más detalles sobre tu consulta..." required></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary full">Enviar Mensaje</button>
+          <button type="button" class="btn btn-secondary full" onclick="closeContactModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>
